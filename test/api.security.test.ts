@@ -117,6 +117,38 @@ function parseAuditEvents(logs: string[]): Array<Record<string, unknown>> {
   return out;
 }
 
+test("baseline security headers are present", async () => {
+  await withServer(async (baseUrl) => {
+    const res = await fetch(`${baseUrl}/health`);
+    assert.equal(res.status, 200);
+    assert.equal(res.headers.get("x-content-type-options"), "nosniff");
+    assert.equal(res.headers.get("x-frame-options"), "DENY");
+    assert.equal(res.headers.get("referrer-policy"), "no-referrer");
+    assert.equal(res.headers.get("permissions-policy"), "camera=(), microphone=(), geolocation=()");
+    assert.equal(res.headers.get("cross-origin-resource-policy"), "same-origin");
+    assert.equal(res.headers.get("x-powered-by"), null);
+  });
+});
+
+test("rejects oversized JSON request body", async () => {
+  await withServer(async (baseUrl) => {
+    const big = "x".repeat(40 * 1024);
+    const res = await fetch(`${baseUrl}/register`, {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({
+        passportNumber: big,
+        birthDateIso: "1990-01-01",
+        issuingAuthority: "SE",
+        publicPepper: "publicpepper123",
+        email: "oversized@example.com",
+        password: "StrongPass!123",
+      }),
+    });
+    assert.equal(res.status, 413);
+  });
+});
+
 test("register rejects missing CSRF token", async () => {
   await withServer(async (baseUrl) => {
     const res = await fetch(`${baseUrl}/register`, {
