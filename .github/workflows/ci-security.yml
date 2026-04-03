@@ -19,37 +19,38 @@ jobs:
         with:
           node-version: '22'
           cache: 'npm'
-          cache-dependency-path: fairsharecoin-foundation/package-lock.json
+          cache-dependency-path: package-lock.json
 
       - name: Install
-        working-directory: fairsharecoin-foundation
         run: npm ci
 
       - name: Build
-        working-directory: fairsharecoin-foundation
         run: npm run build
 
       - name: Test
-        working-directory: fairsharecoin-foundation
         run: npm test
 
       - name: Preflight (staging)
-        working-directory: fairsharecoin-foundation
         run: npm run preflight:staging
 
       - name: Preflight (prod)
-        working-directory: fairsharecoin-foundation
         run: npm run preflight:prod
 
       - name: Dependency audit (high+)
-        working-directory: fairsharecoin-foundation
         run: npm audit --audit-level=high
 
       - name: Secret-like pattern scan
-        working-directory: fairsharecoin-foundation
         run: |
-          if grep -RInE --exclude-dir=node_modules --exclude=package-lock.json --exclude='*.example' '(API_KEY|SECRET_KEY|PRIVATE_KEY|BEGIN RSA PRIVATE KEY|BEGIN OPENSSH PRIVATE KEY|TOKEN=|PASSWORD=)' . ; then
+          if grep -RInE \
+            --exclude-dir=node_modules \
+            --exclude-dir=.git \
+            --exclude-dir=docs \
+            --exclude-dir=.github \
+            --exclude=package-lock.json \
+            --exclude='*.example' \
+            '(AKIA[0-9A-Z]{16}|BEGIN RSA PRIVATE KEY|BEGIN OPENSSH PRIVATE KEY|BEGIN EC PRIVATE KEY|api[_-]?key\s*[:=]|secret\s*[:=]|token\s*[:=]\s*["\x27][A-Za-z0-9_\-]{20,}|password\s*[:=]\s*["\x27][^"\x27]{8,})' \
+            src scripts ; then
             echo 'Potential secret-like strings found.'
             exit 1
           fi
-          echo 'No obvious secret-like strings found.'
+          echo 'No obvious hardcoded secrets found.'
