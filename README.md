@@ -1,5 +1,7 @@
 # FairShareCoin Foundation
 
+FairShareCoin is a one-person-one-coin monetary system built around identity uniqueness, recovery, and long-term fairness.
+
 A local-first alpha foundation for FairShareCoin wallet/account flows and security controls.
 
 > **Alpha status:** This repository is an implementation foundation, not the final decentralized protocol runtime.
