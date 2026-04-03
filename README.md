@@ -1,10 +1,30 @@
 # FairShareCoin Foundation
 
-FairShareCoin is a one-person-one-coin monetary system built around identity uniqueness, recovery, and long-term fairness.
+FairShareCoin is a human-fair monetary system built around identity uniqueness, recoverability, and long-term balance.
 
 A local-first alpha foundation for FairShareCoin wallet/account flows and security controls.
 
-> **Alpha status:** This repository is an implementation foundation, not the final decentralized protocol runtime.
+## At a glance
+
+- One person ↔ one identity lineage in the system (no mining model)
+- Value model is human-centered and fairness-oriented
+- Identity-backed account continuity with recovery-oriented design
+
+## Minimal flow
+
+Register → identity uniqueness check path (future ICAO integration) → wallet/account activation → send/receive value → recover account continuity if access is lost
+
+## Example (illustrative)
+
+You help someone for 10 minutes and receive a small FSC fraction. You keep that value over time under the same fairness rules used for everyone else.
+
+## Status: Alpha (local-first)
+
+- Not production-ready
+- No real ICAO/NFC identity verification live yet
+- No decentralized consensus runtime live yet
+
+> This repository is an implementation foundation, not the final decentralized protocol runtime.
 
 ## What this repo is
 
@@ -75,4 +95,3 @@ npm run start:prod
 
 Licensed under the terms in `LICENSE`.
 
-<!-- CI trigger: 2026-04-03 -->
