@@ -49,7 +49,7 @@ jobs:
             --exclude=package-lock.json \
             --exclude='*.example' \
             '(AKIA[0-9A-Z]{16}|BEGIN RSA PRIVATE KEY|BEGIN OPENSSH PRIVATE KEY|BEGIN EC PRIVATE KEY|api[_-]?key\s*[:=]|secret\s*[:=]|token\s*[:=]\s*["\x27][A-Za-z0-9_\-]{20,}|password\s*[:=]\s*["\x27][^"\x27]{8,})' \
-            src scripts test . ; then
+            src scripts test ; then
             echo 'Potential secret-like strings found.'
             exit 1
           fi
