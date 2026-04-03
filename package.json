@@ -1,0 +1,31 @@
+{
+  "name": "fairsharecoin-foundation",
+  "version": "0.1.0",
+  "description": "Conceptual foundation for FairShareCoin protocol mechanics",
+  "type": "module",
+  "scripts": {
+    "dev": "tsx watch src/api/server.ts",
+    "start": "node dist/src/api/server.js",
+    "start:staging": "NODE_ENV=staging node dist/src/api/server.js",
+    "start:prod": "NODE_ENV=production node dist/src/api/server.js",
+    "build": "tsc -p tsconfig.json",
+    "prod": "npm run build && npm run start:prod",
+    "preflight:staging": "node scripts/preflight.mjs staging .env.staging.example",
+    "preflight:prod": "node scripts/preflight.mjs production .env.production.example",
+    "test": "node --test --import tsx test/**/*.test.ts"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "better-sqlite3": "^11.8.1",
+    "express": "^4.19.2",
+    "zod": "^3.24.1"
+  },
+  "devDependencies": {
+    "@types/bcryptjs": "^2.4.6",
+    "@types/better-sqlite3": "^7.6.12",
+    "@types/express": "^4.17.21",
+    "@types/node": "^22.10.2",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.2"
+  }
+}

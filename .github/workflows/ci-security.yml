@@ -1,0 +1,55 @@
+name: ci-security
+
+on:
+  pull_request:
+  push:
+    branches: [ master, main ]
+
+jobs:
+  build-test-preflight-security:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+          cache-dependency-path: fairsharecoin-foundation/package-lock.json
+
+      - name: Install
+        working-directory: fairsharecoin-foundation
+        run: npm ci
+
+      - name: Build
+        working-directory: fairsharecoin-foundation
+        run: npm run build
+
+      - name: Test
+        working-directory: fairsharecoin-foundation
+        run: npm test
+
+      - name: Preflight (staging)
+        working-directory: fairsharecoin-foundation
+        run: npm run preflight:staging
+
+      - name: Preflight (prod)
+        working-directory: fairsharecoin-foundation
+        run: npm run preflight:prod
+
+      - name: Dependency audit (high+)
+        working-directory: fairsharecoin-foundation
+        run: npm audit --audit-level=high
+
+      - name: Secret-like pattern scan
+        working-directory: fairsharecoin-foundation
+        run: |
+          if grep -RInE --exclude-dir=node_modules --exclude=package-lock.json --exclude='*.example' '(API_KEY|SECRET_KEY|PRIVATE_KEY|BEGIN RSA PRIVATE KEY|BEGIN OPENSSH PRIVATE KEY|TOKEN=|PASSWORD=)' . ; then
+            echo 'Potential secret-like strings found.'
+            exit 1
+          fi
+          echo 'No obvious secret-like strings found.'
