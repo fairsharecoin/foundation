@@ -72,3 +72,5 @@ npm run start:prod
 ## License
 
 Licensed under the terms in `LICENSE`.
+
+<!-- CI trigger: 2026-04-03 -->
