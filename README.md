@@ -91,6 +91,30 @@ npm run start:prod
 - `CONTRIBUTING.md` — contribution workflow
 - `CODE_OF_CONDUCT.md` — community standards
 
+## Clean removal / uninstall (local)
+
+If you want to fully remove this local foundation app from your machine:
+
+```bash
+# from repo root
+# 1) stop any running dev/prod process first (Ctrl+C if foreground)
+
+# 2) one-command local cleanup (includes node_modules, dist, data, .env, .env.local)
+npm run clean:local
+```
+
+Manual equivalent:
+
+```bash
+rm -rf node_modules dist
+rm -rf data
+rm -f .env .env.local
+```
+
+To remove the repository itself, delete the project folder after cleanup.
+
+> Note: `rm` is permanent. Double-check your path before running commands.
+
 ## License
 
 Licensed under the terms in `LICENSE`.
