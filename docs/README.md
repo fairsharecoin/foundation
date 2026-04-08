@@ -4,7 +4,7 @@ This directory is the source of truth for FairShareCoin Foundation documentation
 
 ## Folder map
 
-- `alpha/` — alpha readiness gates, exit criteria, tester profile
+- `alpha/` — alpha readiness gates, exit criteria, tester profile, remint-cycle policy
 - `plans/` — short-term plans, sprint scope, rollout planning
 - `ops/` — operational runbooks, reports, performance and traceability
 - `security/` — threat model, security/privacy plans, hardening matrices
@@ -22,6 +22,10 @@ This directory is the source of truth for FairShareCoin Foundation documentation
 - Use `kebab-case` file names.
 - Use `-vN` when versioning a living doc (example: `alpha-exit-checklist-v1.md`).
 - Use date suffixes for one-off gates/reports when useful (example: `alpha-rc-gate-2026-04-03.md`).
+
+## Key references
+
+- `alpha/remint-cycle-policy-v1.md` — canonical individualized 100-day remint policy
 
 ## Rule of thumb
 

@@ -7,6 +7,7 @@ Last updated: 2026-04-08
 - P2-005.1 open-source release package completed
 - P2-005.2 CI security automation baseline completed
 - P2-004.4 baseline alert thresholds + ops runbook completed
+- Canonical remint policy drafted and locked: `alpha/remint-cycle-policy-v1.md`
 
 ## In progress
 
@@ -18,6 +19,7 @@ Last updated: 2026-04-08
 - Finalize publication pack document set for alpha sharing
 - Confirm alpha exit checklist ownership + signoff path
 - Keep morning reports doc-aware (explicitly include new/untracked docs)
+- Link remint policy into broader alpha onboarding/readme surfaces where needed
 
 ## Blocked
 
