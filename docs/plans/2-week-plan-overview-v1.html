@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>FSC 2-Week Plan Overview</title>
+  <style>
+    :root {
+      --bg: #0f1115;
+      --panel: #171a21;
+      --text: #e8ecf1;
+      --muted: #9aa4b2;
+      --line: #2a3140;
+      --done: #1f8f4f;
+      --ongoing: #6b7280;
+      --alert: #b42318;
+      --done-bg: #123522;
+      --ongoing-bg: #2a2f3a;
+      --alert-bg: #3b1717;
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.4;
+      padding: 24px;
+    }
+
+    .wrap {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    h1 { margin: 0 0 8px; font-size: 1.6rem; }
+    .subtitle { color: var(--muted); margin: 0 0 20px; }
+
+    .meta {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 10px;
+      margin: 0 0 18px;
+    }
+
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 12px;
+    }
+
+    .k { color: var(--muted); font-size: 0.8rem; text-transform: uppercase; letter-spacing: .05em; }
+    .v { font-size: 1.15rem; margin-top: 4px; font-weight: 600; }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    th, td {
+      padding: 11px 12px;
+      border-bottom: 1px solid var(--line);
+      text-align: left;
+      vertical-align: top;
+      font-size: 0.95rem;
+    }
+
+    th {
+      color: #c8d3e2;
+      background: #141821;
+      font-weight: 600;
+    }
+
+    tr:last-child td { border-bottom: 0; }
+
+    .phase {
+      color: #a9b9ce;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    .status {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 9px;
+      border-radius: 999px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .03em;
+      border: 1px solid transparent;
+      white-space: nowrap;
+    }
+
+    .done { color: #9ef0bf; background: var(--done-bg); border-color: #22653f; }
+    .ongoing { color: #d3d7de; background: var(--ongoing-bg); border-color: #4b5563; }
+    .alert { color: #ffc8c3; background: var(--alert-bg); border-color: #8f2d2d; }
+
+    .notes {
+      margin-top: 16px;
+      color: var(--muted);
+      font-size: .9rem;
+    }
+
+    code { background: #10141c; border: 1px solid #283245; padding: 1px 6px; border-radius: 6px; }
+
+    @media (max-width: 760px) {
+      body { padding: 14px; }
+      th, td { font-size: .9rem; padding: 10px; }
+      h1 { font-size: 1.3rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>FSC — 2 Week Plan Overview</h1>
+    <p class="subtitle">Phase A (hardening) → Phase B (private invite alpha). Update statuses as work progresses.</p>
+    <p class="subtitle" id="lastUpdated" style="margin-top:-10px;">Last updated: 2026-04-07 21:55 (Europe/Stockholm)</p>
+
+    <div class="meta">
+      <div class="card"><div class="k">Done</div><div class="v" id="doneCount">0</div></div>
+      <div class="card"><div class="k">Ongoing / Pending</div><div class="v" id="ongoingCount">14</div></div>
+      <div class="card"><div class="k">Alerts / Blockers</div><div class="v" id="alertCount">0</div></div>
+      <div class="card"><div class="k">Target Cadence</div><div class="v">Daily 19:00 report</div></div>
+    </div>
+
+    <table>
+      <thead>
+        <tr>
+          <th style="width:80px">Day</th>
+          <th style="width:130px">Phase</th>
+          <th>Focus</th>
+          <th style="width:170px">Status</th>
+          <th>Notes / Issues</th>
+        </tr>
+      </thead>
+      <tbody id="planRows">
+        <tr><td>Day 1</td><td class="phase">Phase A</td><td>Freeze sprint scope, create Alpha Exit Checklist v1, define tester profile</td><td><span class="status done">✅ Done</span></td><td>Done: alpha-exit-checklist-v1.md, sprint-scope-freeze-day1.md, private-invite-tester-profile-v1.md</td></tr>
+        <tr><td>Day 2</td><td class="phase">Phase A</td><td>Auth/session test expansion (timeout, invalidation, progressive login delay)</td><td><span class="status ongoing">⬜ Ongoing</span></td><td>Execution started. Baseline suite passed: 23/23 (npm test). Next: targeted timeout/delay checks.</td></tr>
+        <tr><td>Day 3</td><td class="phase">Phase A</td><td>Transfer/cooldown/rate-limit stress checks and fixes</td><td><span class="status ongoing">⬜ Ongoing</span></td><td></td></tr>
+        <tr><td>Day 4</td><td class="phase">Phase A</td><td>Backup/restore drill + recovery runbook</td><td><span class="status ongoing">⬜ Ongoing</span></td><td></td></tr>
+        <tr><td>Day 5</td><td class="phase">Phase A</td><td>Security/config baseline + error-message hygiene + event trail review</td><td><span class="status ongoing">⬜ Ongoing</span></td><td></td></tr>
+        <tr><td>Day 6</td><td class="phase">Phase A</td><td>Buffer/fix day for blockers</td><td><span class="status ongoing">⬜ Ongoing</span></td><td></td></tr>
+        <tr><td>Day 7</td><td class="phase">Phase A</td><td>Gate review: Go/No-Go to private invite alpha prep</td><td><span class="status ongoing">⬜ Ongoing</span></td><td></td></tr>
+
+        <tr><td>Day 8</td><td class="phase">Phase B</td><td>Repo visibility strategy + invitation text draft</td><td><span class="status ongoing">⬜ Ongoing</span></td><td></td></tr>
+        <tr><td>Day 9</td><td class="phase">Phase B</td><td>Alpha environment prep (deploy, HTTPS, restart sanity)</td><td><span class="status ongoing">⬜ Ongoing</span></td><td></td></tr>
+        <tr><td>Day 10</td><td class="phase">Phase B</td><td>Tester onboarding pack + issue reporting flow</td><td><span class="status ongoing">⬜ Ongoing</span></td><td></td></tr>
+        <tr><td>Day 11</td><td class="phase">Phase B</td><td>Invite/access control setup (small friend cohort)</td><td><span class="status ongoing">⬜ Ongoing</span></td><td></td></tr>
+        <tr><td>Day 12</td><td class="phase">Phase B</td><td>First live private testing window + triage</td><td><span class="status ongoing">⬜ Ongoing</span></td><td></td></tr>
+        <tr><td>Day 13</td><td class="phase">Phase B</td><td>Patch critical/major issues + targeted regression checks</td><td><span class="status ongoing">⬜ Ongoing</span></td><td></td></tr>
+        <tr><td>Day 14</td><td class="phase">Phase B</td><td>Sprint review + readiness score + next-phase decision</td><td><span class="status ongoing">⬜ Ongoing</span></td><td></td></tr>
+      </tbody>
+    </table>
+
+    <p class="notes">
+      Legend: <span class="status done">✅ Done</span>
+      <span class="status ongoing">⬜ Ongoing</span>
+      <span class="status alert">⚠ Alert</span><br/>
+      Tip: edit each row status text/class directly in this file (<code>done</code>, <code>ongoing</code>, <code>alert</code>) and refresh.
+    </p>
+  </div>
+
+  <script>
+    (function recalc(){
+      const statuses = [...document.querySelectorAll('#planRows .status')];
+      let done = 0, ongoing = 0, alert = 0;
+      statuses.forEach(s => {
+        if (s.classList.contains('done')) done++;
+        else if (s.classList.contains('alert')) alert++;
+        else ongoing++;
+      });
+      document.getElementById('doneCount').textContent = done;
+      document.getElementById('ongoingCount').textContent = ongoing;
+      document.getElementById('alertCount').textContent = alert;
+    })();
+  </script>
+</body>
+</html>

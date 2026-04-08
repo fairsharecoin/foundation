@@ -85,8 +85,10 @@ npm run start:prod
 ## Documentation
 
 - `OPEN_SOURCE_READINESS.md` — publish boundaries, risks, and release checklist
-- `docs/ALPHA_RC_GATE_2026-04-03.md` — alpha readiness gate evidence
+- `docs/alpha/alpha-rc-gate-2026-04-03.md` — alpha readiness gate evidence
 - `docs/DECENTRALIZATION_MIGRATION_MAP.md` — centralized-now to decentralized-target mapping
+- `docs/README.md` — canonical docs map (where each doc type belongs)
+- `docs/STATUS.md` — shared progress snapshot (done/in progress/next/blocked)
 - `SECURITY.md` — vulnerability reporting policy
 - `CONTRIBUTING.md` — contribution workflow
 - `CODE_OF_CONDUCT.md` — community standards
