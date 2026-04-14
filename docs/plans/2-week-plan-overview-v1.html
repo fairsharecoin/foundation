@@ -122,7 +122,7 @@
   <div class="wrap">
     <h1>FSC — 2 Week Plan Overview</h1>
     <p class="subtitle">Phase A (hardening) → Phase B (private invite alpha). Update statuses as work progresses.</p>
-    <p class="subtitle" id="lastUpdated" style="margin-top:-10px;">Last updated: 2026-04-07 21:55 (Europe/Stockholm)</p>
+    <p class="subtitle" id="lastUpdated" style="margin-top:-10px;">Last updated: 2026-04-14 07:41 (Europe/Stockholm)</p>
 
     <div class="meta">
       <div class="card"><div class="k">Done</div><div class="v" id="doneCount">0</div></div>
@@ -143,14 +143,14 @@
       </thead>
       <tbody id="planRows">
         <tr><td>Day 1</td><td class="phase">Phase A</td><td>Freeze sprint scope, create Alpha Exit Checklist v1, define tester profile</td><td><span class="status done">✅ Done</span></td><td>Done: alpha-exit-checklist-v1.md, sprint-scope-freeze-day1.md, private-invite-tester-profile-v1.md</td></tr>
-        <tr><td>Day 2</td><td class="phase">Phase A</td><td>Auth/session test expansion (timeout, invalidation, progressive login delay)</td><td><span class="status ongoing">⬜ Ongoing</span></td><td>Execution started. Baseline suite passed: 23/23 (npm test). Next: targeted timeout/delay checks.</td></tr>
-        <tr><td>Day 3</td><td class="phase">Phase A</td><td>Transfer/cooldown/rate-limit stress checks and fixes</td><td><span class="status ongoing">⬜ Ongoing</span></td><td></td></tr>
-        <tr><td>Day 4</td><td class="phase">Phase A</td><td>Backup/restore drill + recovery runbook</td><td><span class="status ongoing">⬜ Ongoing</span></td><td></td></tr>
-        <tr><td>Day 5</td><td class="phase">Phase A</td><td>Security/config baseline + error-message hygiene + event trail review</td><td><span class="status ongoing">⬜ Ongoing</span></td><td></td></tr>
-        <tr><td>Day 6</td><td class="phase">Phase A</td><td>Buffer/fix day for blockers</td><td><span class="status ongoing">⬜ Ongoing</span></td><td></td></tr>
-        <tr><td>Day 7</td><td class="phase">Phase A</td><td>Gate review: Go/No-Go to private invite alpha prep</td><td><span class="status ongoing">⬜ Ongoing</span></td><td></td></tr>
+        <tr><td>Day 2</td><td class="phase">Phase A</td><td>Auth/session test expansion (timeout, invalidation, progressive login delay)</td><td><span class="status done">✅ Done</span></td><td>Completed: added tests for progressive login delay, password-change session invalidation, and idle-session timeout. Validation green after build: 26/26 tests.</td></tr>
+        <tr><td>Day 3</td><td class="phase">Phase A</td><td>Transfer/cooldown/rate-limit stress checks and fixes</td><td><span class="status done">✅ Done</span></td><td>Completed: configurable transfer cooldown (FSC_TRANSFER_COOLDOWN_SEC) + stress tests for cooldown-window recovery and transfer burst rate limiting. Validation green after build: 28/28 tests.</td></tr>
+        <tr><td>Day 4</td><td class="phase">Phase A</td><td>Backup/restore drill + recovery runbook</td><td><span class="status done">✅ Done</span></td><td>Completed: added db backup/restore scripts + runbook (`docs/ops/backup-restore-runbook-v1.md`), executed backup+restore drill, and verified DB integrity (`PRAGMA quick_check` = ok).</td></tr>
+        <tr><td>Day 5</td><td class="phase">Phase A</td><td>Security/config baseline + error-message hygiene + event trail review</td><td><span class="status done">✅ Done</span></td><td>Completed: config baseline updates landed (TTL/cooldown envs + backup/restore docs), and event/error-surface quick-pass documented in <code>docs/security/error-surface-review-2026-04-08.md</code> with follow-up actions queued.</td></tr>
+        <tr><td>Day 6</td><td class="phase">Phase A</td><td>Buffer/fix day for blockers</td><td><span class="status done">✅ Done</span></td><td>Completed: Day 5 follow-ups closed (operator endpoint→audit matrix, login_failed→login_blocked_delay sequence assertion in integration test, and explicit non-enumerating user-error policy note). No new blocker raised.</td></tr>
+        <tr><td>Day 7</td><td class="phase">Phase A</td><td>Gate review: Go/No-Go to private invite alpha prep</td><td><span class="status done">✅ Done</span></td><td>Completed: gate review documented in <code>docs/plans/day7-go-no-go-gate-v1.md</code> with provisional GO and controlled-cohort condition.</td></tr>
 
-        <tr><td>Day 8</td><td class="phase">Phase B</td><td>Repo visibility strategy + invitation text draft</td><td><span class="status ongoing">⬜ Ongoing</span></td><td></td></tr>
+        <tr><td>Day 8</td><td class="phase">Phase B</td><td>Repo visibility strategy + invitation text draft</td><td><span class="status done">✅ Done</span></td><td>Completed: strategy + invite draft finalized and Day 9 execution checklist prepared in <code>docs/plans/day8-repo-visibility-and-invite-draft-v1.md</code>.</td></tr>
         <tr><td>Day 9</td><td class="phase">Phase B</td><td>Alpha environment prep (deploy, HTTPS, restart sanity)</td><td><span class="status ongoing">⬜ Ongoing</span></td><td></td></tr>
         <tr><td>Day 10</td><td class="phase">Phase B</td><td>Tester onboarding pack + issue reporting flow</td><td><span class="status ongoing">⬜ Ongoing</span></td><td></td></tr>
         <tr><td>Day 11</td><td class="phase">Phase B</td><td>Invite/access control setup (small friend cohort)</td><td><span class="status ongoing">⬜ Ongoing</span></td><td></td></tr>

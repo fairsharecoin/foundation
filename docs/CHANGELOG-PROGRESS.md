@@ -1,5 +1,19 @@
 # Progress Changelog
 
+## 2026-04-14
+
+- Closed Day 6 follow-up set and captured closure in docs/tests:
+  - endpoint -> audit-event matrix
+  - `login_failed` -> `login_blocked_delay` sequence assertion
+  - non-enumerating error policy note
+- Finalized Day 8 repo visibility strategy + private invite draft sign-off; added Day 9 execution checklist.
+- Added alpha readiness gate report: `docs/alpha/alpha-readiness-gate-2026-04-14.md`.
+- Re-ran full quality gate:
+  - build PASS
+  - tests PASS (28/28)
+  - staging preflight PASS
+  - production preflight PASS
+
 ## 2026-04-08
 
 - Started docs hygiene reorganization using belt-and-suspenders flow:
