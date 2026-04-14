@@ -12,6 +12,8 @@
     "prod": "npm run build && npm run start:prod",
     "preflight:staging": "node scripts/preflight.mjs staging .env.staging.example",
     "preflight:prod": "node scripts/preflight.mjs production .env.production.example",
+    "db:backup": "node scripts/backup-db.mjs",
+    "db:restore": "node scripts/restore-db.mjs",
     "test": "node --test --import tsx test/**/*.test.ts",
     "clean": "node -e \"const fs=require('fs'); for (const p of ['dist','node_modules']) { try { fs.rmSync(p,{recursive:true,force:true}); } catch {} }\"",
     "clean:local": "node -e \"const fs=require('fs'); for (const p of ['dist','node_modules','data','.env','.env.local']) { try { fs.rmSync(p,{recursive:true,force:true}); } catch {} }\""

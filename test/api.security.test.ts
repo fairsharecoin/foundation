@@ -70,14 +70,17 @@ async function requestWithJar(baseUrl: string, jar: CookieJar, path: string, ini
   return fetch(`${baseUrl}${path}`, { ...init, headers });
 }
 
-async function withServer(fn: (baseUrl: string, logs: string[]) => Promise<void>): Promise<void> {
+async function withServer(
+  fn: (baseUrl: string, logs: string[]) => Promise<void>,
+  extraEnv?: Record<string, string>,
+): Promise<void> {
   const cwd = mkdtempSync(path.join(tmpdir(), "fsc-api-test-"));
   const port = 4300 + Math.floor(Math.random() * 300);
   const baseUrl = `http://127.0.0.1:${port}`;
 
   const cp: ChildProcess = spawn(process.execPath, [serverEntry], {
     cwd,
-    env: { ...process.env, PORT: String(port), NODE_ENV: "test" },
+    env: { ...process.env, PORT: String(port), NODE_ENV: "test", ...(extraEnv || {}) },
     stdio: ["ignore", "pipe", "pipe"],
   });
 
@@ -342,6 +345,87 @@ async function registerAndLogin(baseUrl: string, email: string) {
   return { client, walletId: String(loginBody.walletId) };
 }
 
+test("progressive login delay blocks immediate retry after failed login", async () => {
+  await withServer(async (baseUrl, logs) => {
+    const email = "delay@example.com";
+    await registerAndLogin(baseUrl, email);
+
+    const badClient = await createClient(baseUrl);
+    const bad = await badClient.request("/login", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ email, password: "WrongPass!999" }),
+    });
+    assert.equal(bad.status, 400);
+
+    const immediateRetry = await badClient.request("/login", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ email, password: "StrongPass!123" }),
+    });
+    assert.equal(immediateRetry.status, 400);
+    const body = await immediateRetry.json();
+    assert.match(String(body.error), /progressive delay active/i);
+
+    await new Promise((r) => setTimeout(r, 80));
+    const events = parseAuditEvents(logs).map((e) => String(e.event || ""));
+    const failedIdx = events.lastIndexOf("login_failed");
+    const blockedIdx = events.lastIndexOf("login_blocked_delay");
+    assert.ok(failedIdx >= 0, "expected login_failed audit event");
+    assert.ok(blockedIdx > failedIdx, "expected login_blocked_delay after login_failed");
+  });
+});
+
+test("password change invalidates existing sessions", async () => {
+  await withServer(async (baseUrl) => {
+    const acc = await registerAndLogin(baseUrl, "pw-invalidate@example.com");
+
+    const pwRes = await acc.client.request("/settings/change-password", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ currentPassword: "StrongPass!123", newPassword: "StrongPass!456" }),
+    });
+    assert.equal(pwRes.status, 200);
+
+    const oldSessionWalletRes = await acc.client.request(`/wallet/${encodeURIComponent(acc.walletId)}`);
+    assert.equal(oldSessionWalletRes.status, 400);
+    const oldSessionErr = await oldSessionWalletRes.json();
+    assert.match(String(oldSessionErr.error), /(session expired|not authenticated)/i);
+
+    const relogClient = await createClient(baseUrl);
+    const oldPasswordLogin = await relogClient.request("/login", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ email: "pw-invalidate@example.com", password: "StrongPass!123" }),
+    });
+    assert.equal(oldPasswordLogin.status, 400);
+
+    await new Promise((r) => setTimeout(r, 1100));
+    const newPasswordLogin = await relogClient.request("/login", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ email: "pw-invalidate@example.com", password: "StrongPass!456" }),
+    });
+    assert.equal(newPasswordLogin.status, 200);
+  });
+});
+
+test("session timeout expires idle sessions", async () => {
+  await withServer(async (baseUrl) => {
+    const acc = await registerAndLogin(baseUrl, "ttl@example.com");
+    await new Promise((r) => setTimeout(r, 2200));
+
+    const pingRes = await acc.client.request("/session/ping", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: "{}",
+    });
+    assert.equal(pingRes.status, 400);
+    const body = await pingRes.json();
+    assert.match(String(body.error), /session expired/i);
+  }, { FSC_SESSION_TTL_SEC: "1" });
+});
+
 test("forbidden wallet access is blocked", async () => {
   await withServer(async (baseUrl) => {
     const a = await registerAndLogin(baseUrl, "a@example.com");
@@ -375,6 +459,60 @@ test("transfer cooldown is enforced", async () => {
     const body = await two.json();
     assert.match(String(body.error), /cooldown/i);
   });
+});
+
+test("transfer cooldown allows retry after configured cooldown window", async () => {
+  await withServer(async (baseUrl) => {
+    const sender = await registerAndLogin(baseUrl, "sender-cooldown-window@example.com");
+    const receiver = await registerAndLogin(baseUrl, "receiver-cooldown-window@example.com");
+
+    const one = await sender.client.request("/transfer", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ toWalletId: receiver.walletId, amountFSC: 0.000001 }),
+    });
+    assert.equal(one.status, 200);
+
+    const immediate = await sender.client.request("/transfer", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ toWalletId: receiver.walletId, amountFSC: 0.000001 }),
+    });
+    assert.equal(immediate.status, 400);
+
+    await new Promise((r) => setTimeout(r, 1200));
+    const afterWait = await sender.client.request("/transfer", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ toWalletId: receiver.walletId, amountFSC: 0.000001 }),
+    });
+    assert.equal(afterWait.status, 200);
+  }, { FSC_TRANSFER_COOLDOWN_SEC: "1" });
+});
+
+test("transfer endpoint account rate limit is enforced under burst", async () => {
+  await withServer(async (baseUrl) => {
+    const sender = await registerAndLogin(baseUrl, "sender-rate@example.com");
+    const receiver = await registerAndLogin(baseUrl, "receiver-rate@example.com");
+
+    let sawRateLimit = false;
+    for (let i = 0; i < 30; i++) {
+      const res = await sender.client.request("/transfer", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ toWalletId: receiver.walletId, amountFSC: 0.000001 }),
+      });
+      if (res.status === 400) {
+        const body = await res.json();
+        if (/rate limit/i.test(String(body.error))) {
+          sawRateLimit = true;
+          break;
+        }
+      }
+    }
+
+    assert.equal(sawRateLimit, true);
+  }, { FSC_TRANSFER_COOLDOWN_SEC: "0" });
 });
 
 test("invalid transfer amount is rejected", async () => {

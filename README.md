@@ -68,6 +68,8 @@ npm run start:prod
 - `npm run start:prod` — run with `NODE_ENV=production`
 - `npm run preflight:staging` — strict staging preflight gate
 - `npm run preflight:prod` — strict production preflight gate
+- `npm run db:backup` — create DB backup + metadata in `data/backups/`
+- `npm run db:restore -- --from <backup-file> [--to <target-db>] [--force]` — restore DB backup
 - `npm test` — test suite
 
 ## Security and operational notes
@@ -76,6 +78,8 @@ npm run start:prod
 - CSRF on mutating routes (double-submit + same-origin checks)
 - Endpoint-level rate limits and cooldown controls
 - In staging/production, `FSC_DB_PATH` is required (fail-fast if missing)
+- Configurable session timeout: `FSC_SESSION_TTL_SEC` (default 900)
+- Configurable transfer cooldown: `FSC_TRANSFER_COOLDOWN_SEC` (default 120)
 
 ## Data model clarity
 
@@ -89,6 +93,7 @@ npm run start:prod
 - `docs/DECENTRALIZATION_MIGRATION_MAP.md` — centralized-now to decentralized-target mapping
 - `docs/README.md` — canonical docs map (where each doc type belongs)
 - `docs/STATUS.md` — shared progress snapshot (done/in progress/next/blocked)
+- `docs/ops/backup-restore-runbook-v1.md` — backup/restore drill and recovery procedure
 - `SECURITY.md` — vulnerability reporting policy
 - `CONTRIBUTING.md` — contribution workflow
 - `CODE_OF_CONDUCT.md` — community standards
