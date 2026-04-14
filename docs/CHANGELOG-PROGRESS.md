@@ -13,6 +13,11 @@
   - tests PASS (28/28)
   - staging preflight PASS
   - production preflight PASS
+- Executed Day 9 staging-local environment run:
+  - strict staging start
+  - smoke flow PASS (register/login/transfer/ping/logout/relogin)
+  - restart sanity PASS (/health 200)
+  - report: `docs/plans/day9-staging-execution-report-2026-04-14.md`
 
 ## 2026-04-08
 

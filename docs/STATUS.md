@@ -11,6 +11,7 @@ Last updated: 2026-04-14
 - Day 6 follow-up set closed (audit-event matrix, event-sequence assertion, non-enumeration note)
 - P2-005.3 publication pack final review completed
 - Alpha readiness gate rerun passed: build + 28/28 tests + staging/prod preflight
+- Day 9 staging execution run passed (staging-local smoke + restart sanity)
 
 ## In progress
 
@@ -18,7 +19,7 @@ Last updated: 2026-04-14
 
 ## Next
 
-- Day 9 alpha environment execution (deploy/HTTPS/restart sanity)
+- Day 9 HTTPS/domain validation on external staging target
 - Day 10 tester onboarding pack + issue reporting flow
 - First invite cohort definition + access control procedure
 
