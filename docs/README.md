@@ -26,6 +26,11 @@ This directory is the source of truth for FairShareCoin Foundation documentation
 ## Key references
 
 - `alpha/remint-cycle-policy-v1.md` — canonical individualized 100-day remint policy
+- `ops/weekend-staging-guided-checklist-v1.md` — step-by-step external staging validation guide
+- `ops/day12-live-window-operator-run-sheet-v1.md` — execution checklist + summary template for first live private test window
+- `plans/day13-patching-and-regression-checks-v1.md` — patch queue and targeted regression protocol
+- `plans/day14-sprint-review-readiness-scorecard-v1.md` — readiness scoring and GO/HOLD/NO-GO decision framework
+- `ops/staging-nginx-vhost-template-v1.md` — practical reverse-proxy template for external staging HTTPS
 
 ## Rule of thumb
 

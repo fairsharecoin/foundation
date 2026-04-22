@@ -94,6 +94,7 @@ npm run start:prod
 - `docs/README.md` — canonical docs map (where each doc type belongs)
 - `docs/STATUS.md` — shared progress snapshot (done/in progress/next/blocked)
 - `docs/ops/backup-restore-runbook-v1.md` — backup/restore drill and recovery procedure
+- `docs/ops/weekend-staging-guided-checklist-v1.md` — operator-friendly weekend staging go-live checklist
 - `SECURITY.md` — vulnerability reporting policy
 - `CONTRIBUTING.md` — contribution workflow
 - `CODE_OF_CONDUCT.md` — community standards
