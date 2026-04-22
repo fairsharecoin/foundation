@@ -42,6 +42,6 @@ This document defines what is safe to publish now, what must be excluded, and th
 - [ ] LICENSE + CONTRIBUTING + CODE_OF_CONDUCT + SECURITY present
 
 ## 6) Alpha release-candidate gate outcome
-See: `docs/ALPHA_RC_GATE_2026-04-03.md`
+See: `docs/alpha/alpha-rc-gate-2026-04-03.md`
 
 Status: **Prepared** (documentation + governance + checks executed). Final public push remains an explicit operator decision.

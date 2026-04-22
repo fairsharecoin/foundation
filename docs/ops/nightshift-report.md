@@ -41,11 +41,11 @@ This report captures the planned overnight work package and the produced artifac
 ## Produced Artifacts
 
 1. `docs/PHASE2-DETAIL.md`
-2. `docs/SECURITY-PRIVACY-PLAN.md`
+2. `docs/security/security-privacy-plan.md`
 3. `docs/ARCHITECTURE-GATEWAY-NODES-v1.md`
 4. `docs/GITHUB-UPDATE-DRAFT.md`
 
-This file itself (`docs/NIGHTSHIFT-REPORT.md`) is deliverable #1.
+This file itself (`docs/ops/nightshift-report.md`) is deliverable #1.
 
 ---
 

@@ -16,7 +16,10 @@ const port = Number(process.env.PORT ?? 4010);
 
 const SIM_REMINT_INTERVAL_MS = 12 * 60 * 60 * 1000; // 12h simulation cycle
 const SIM_REMINT_CHECK_MS = 60 * 1000; // check every minute
-const SESSION_TTL_MS = 15 * 60 * 1000; // 15 min idle timeout
+const SESSION_TTL_SEC = Number(process.env.FSC_SESSION_TTL_SEC || 900);
+const SESSION_TTL_MS = Math.max(1, SESSION_TTL_SEC) * 1000; // defaults to 15 min idle timeout
+const TRANSFER_COOLDOWN_SEC = Number(process.env.FSC_TRANSFER_COOLDOWN_SEC || 120);
+const TRANSFER_COOLDOWN_MS = Math.max(0, TRANSFER_COOLDOWN_SEC) * 1000;
 const CSRF_COOKIE_NAME = "fsc_csrf";
 const SESSION_COOKIE_NAME = "fsc_session";
 const DEVICE_COOKIE_NAME = "fsc_device";
@@ -2500,7 +2503,7 @@ app.post("/transfer", (req, res) => {
 
     const now = Date.now();
     const last = transferCooldownByWallet.get(fromWalletId) ?? 0;
-    const cooldownMs = 2 * 60 * 1000;
+    const cooldownMs = TRANSFER_COOLDOWN_MS;
     if (now - last < cooldownMs) {
       const waitSec = Math.ceil((cooldownMs - (now - last)) / 1000);
       throw new FSCError(`transfer cooldown active: wait ${waitSec}s`);
